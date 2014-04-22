@@ -6,10 +6,10 @@ use Cyantree\Grout\Tools\StringTools;
 
 class IsInteger extends Check
 {
-    public function check($value)
+    public $id = 'isInteger';
+
+    public function isValid($value)
     {
-        if (strval(intval($value)) !== strval($value)) {
-            $this->addError('isInteger');
-        }
+        return strval(intval($value)) === strval($value);
     }
 }

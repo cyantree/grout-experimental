@@ -9,23 +9,35 @@ class Constraint
 {
     public $name;
 
+    public $message;
+
     public $value;
 
-    public $hasError = false;
     public $stopCheckOnError = true;
 
-    /** @var Check[] */
-    public $checks = array();
+    public $allowEmpty = false;
 
-    function __construct($name = null, $value = null)
+    /** @var ConstraintCheck[] */
+    protected $_checks = array();
+
+    function __construct($name = null, $value = null, $message = null)
     {
         $this->name = $name;
         $this->value = $value;
+        $this->message = $message;
     }
 
-    public function addCheck(Check $check)
+    public function addCheck(Check $check, $id = null, $message = null)
     {
-        $this->checks[] = $check;
+        $c = new ConstraintCheck();
+        $c->check = $check;
+        $c->message = $message;
+
+        if ($id === null) {
+            $id = $check->id;
+        }
+
+        $this->_checks[$id] = $c;
     }
 
     public function fetch(ArrayFilter $data)
@@ -35,35 +47,42 @@ class Constraint
         return $this->value;
     }
 
-    public function check()
+    public function check($skipEmptyErrors = false)
     {
-        $this->hasError = false;
+        $errors = null;
+        $isValid = true;
 
-        foreach ($this->checks as $check) {
-            $check->check($this->value);
+        if ($this->allowEmpty && ($this->value === '' || $this->value === null)) {
+            return true;
+        }
 
-            if ($check->hasErrors) {
-                $this->hasError = true;
+        foreach ($this->_checks as $id => $check) {
+            $valid = $check->check->isValid($this->value);
+
+            if (!$valid) {
+                if ($isValid) {
+                    $isValid = false;
+                    $errors = array();
+                }
+
+                if (!$skipEmptyErrors || $check->message !== null) {
+                    $errors[$id] = $check->message;
+                }
 
                 if ($this->stopCheckOnError) {
-                    return false;
+                    break;
                 }
             }
         }
 
-        return !$this->hasError;
+        return $isValid ? true : $errors;
     }
+}
 
-    public function pushStatus(FormStatus $status)
-    {
-        foreach ($this->checks as $check) {
-            if ($check->hasErrors) {
-                $status->postError($this->name);
+class ConstraintCheck
+{
+    /** @var Check */
+    public $check;
 
-                foreach ($check->errors as $code => $message) {
-                    $status->postError($this->name . '.' . $code, $message);
-                }
-            }
-        }
-    }
+    public $message;
 }

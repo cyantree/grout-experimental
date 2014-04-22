@@ -6,14 +6,10 @@ use Cyantree\Grout\Tools\StringTools;
 
 class IsEmailAddress extends Check
 {
-    public function check($value)
-    {
-        if (ArrayTools::get($this->options, 'allowEmpty') && $value == '') {
-            return;
-        }
+    public $id = 'isEmailAddress';
 
-        if (!StringTools::isEmailAddress($value)) {
-            $this->addError('isEmailAddress');
-        }
+    public function isValid($value)
+    {
+        return StringTools::isEmailAddress($value);
     }
 }

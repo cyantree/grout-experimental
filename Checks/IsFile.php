@@ -6,16 +6,21 @@ use Cyantree\Grout\Types\FileUpload;
 
 class IsFile extends Check
 {
-    public function check($fileUploadOrPath)
+    public $id = 'isFile';
+
+    public function isValid($fileUploadOrPath)
     {
         if ($fileUploadOrPath instanceof FileUpload) {
             if (!is_file($fileUploadOrPath->file)) {
-                $this->addError('isFile');
+                return false;
             }
+
         } else {
             if (!is_file($fileUploadOrPath)) {
-                $this->addError('isFile');
+                return false;
             }
         }
+
+        return true;
     }
 }

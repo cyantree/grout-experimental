@@ -6,18 +6,18 @@ use Cyantree\Grout\Tools\StringTools;
 
 class InArray extends Check
 {
+    public $id = 'inArray';
+
     public $array;
 
-    public function __construct($array, $messageOrOptions)
+    public function __construct($array)
     {
-        parent::__construct($messageOrOptions);
+        parent::__construct();
 
         $this->array = $array;
     }
-    public function check($value)
+    public function isValid($value)
     {
-        if (!in_array($value, $this->array)) {
-            $this->addError('inArray');
-        }
+        return in_array($value, $this->array);
     }
 }

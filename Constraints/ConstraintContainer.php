@@ -28,23 +28,31 @@ class ConstraintContainer
         }
     }
 
-    public function check()
+    public function check($includeSubErrors = true, $skipEmptyErrors = false)
     {
-        $success = true;
+        $isValid = true;
+        $errors = null;
 
         foreach ($this->constraints as $constraint) {
-            if (!$constraint->check()) {
-                $success = false;
+            $result = $constraint->check($skipEmptyErrors);
+
+            if ($result !== true) {
+                if ($isValid) {
+                    $isValid = false;
+                    $errors = array();
+                }
+
+                $errors[$constraint->name] = $constraint->message;
+
+                if ($includeSubErrors) {
+                    foreach ($result as $code => $message) {
+                        $errors[$constraint->name . '.' . $code] = $message;
+                    }
+                }
             }
         }
 
-        return $success;
-    }
-
-    public function pushStatus(FormStatus $status) {
-        foreach ($this->constraints as $constraint) {
-            $constraint->pushStatus($status);
-        }
+        return $isValid ? true : $errors;
     }
 
     public function dumpValuesTo($arrayOrObject, $exclude = null)

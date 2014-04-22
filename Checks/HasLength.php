@@ -8,22 +8,19 @@ class HasLength extends Check
     public $minLength = null;
     public $maxLength = null;
 
-    public function __construct($minLength = null, $maxLength = null, $messageOrOptions = null)
+    public function __construct($minLength = null, $maxLength = null)
     {
-        parent::__construct($messageOrOptions);
+        parent::__construct();
 
         $this->minLength = $minLength;
         $this->maxLength = $maxLength;
     }
 
-    public function check($value)
+    public function isValid($value)
     {
         $len = mb_strlen($value);
 
-        if (
-              ($this->minLength !== null && $len < $this->minLength) ||
-              ($this->maxLength !== null && $len > $this->maxLength)) {
-            $this->addError('hasLength');
-        }
+        return !(($this->minLength !== null && $len < $this->minLength) ||
+              ($this->maxLength !== null && $len > $this->maxLength));
     }
 }

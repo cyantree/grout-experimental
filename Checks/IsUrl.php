@@ -6,14 +6,10 @@ use Cyantree\Grout\Tools\StringTools;
 
 class IsUrl extends Check
 {
-    public function check($value)
-    {
-        if (ArrayTools::get($this->options, 'allowEmpty') && $value == '') {
-            return;
-        }
+    public $id = 'isUrl';
 
-        if (!StringTools::isUrl($value)) {
-            $this->addError('isUrl');
-        }
+    public function isValid($value)
+    {
+        return StringTools::isUrl($value);
     }
 }

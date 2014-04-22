@@ -9,20 +9,16 @@ class HasFilesize extends Check
     public $minSize = null;
     public $maxSize = null;
 
-    public function __construct($minSize = null, $maxSize = null, $messageOrOptions = null)
+    public function __construct($minSize = null, $maxSize = null)
     {
-        parent::__construct($messageOrOptions);
+        parent::__construct();
 
         $this->minSize = $minSize;
         $this->maxSize = $maxSize;
     }
 
-    public function check($fileUploadOrPath)
+    public function isValid($fileUploadOrPath)
     {
-        if ($fileUploadOrPath == '') {
-            return;
-        }
-
         if ($fileUploadOrPath instanceof FileUpload) {
             $size = $fileUploadOrPath->size;
 
@@ -30,10 +26,7 @@ class HasFilesize extends Check
             $size = filesize($fileUploadOrPath);
         }
 
-        if (
-              ($this->minSize !== null && $size < $this->minSize) ||
-              ($this->maxSize !== null && $size > $this->maxSize)) {
-            $this->addError('hasLength');
-        }
+        return !(($this->minSize !== null && $size < $this->minSize) ||
+              ($this->maxSize !== null && $size > $this->maxSize));
     }
 }

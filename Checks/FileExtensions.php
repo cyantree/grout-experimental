@@ -10,33 +10,27 @@ class FileExtensions extends Check
     const MODE_REQUIRED = 'required';
     const MODE_PERMITTED = 'permitted';
 
-    private $_extensions;
-    private $_mode;
+    public $extensions;
+    public $mode;
+    public $ignoreCase;
 
-    private $_ignoreCase = false;
-
-    public function __construct($extensions, $mode, $messageOrOptions = null)
+    public function __construct($extensions, $mode, $ignoreCase = false)
     {
-        parent::__construct($messageOrOptions);
+        parent::__construct();
 
-        $this->_ignoreCase = ArrayTools::get($this->options, 'ignoreCase');
-        $this->_mode = $mode;
+        $this->ignoreCase = $ignoreCase;
+        $this->mode = $mode;
 
-        if ($this->_ignoreCase) {
-            $this->_extensions = explode('/', strtolower(implode('/', $extensions)));
+        if ($this->ignoreCase) {
+            $this->extensions = explode('/', strtolower(implode('/', $extensions)));
 
         } else {
-            $this->_extensions = $extensions;
+            $this->extensions = $extensions;
         }
     }
 
-    public function check($fileUploadOrPath)
+    public function isValid($fileUploadOrPath)
     {
-
-        if ($fileUploadOrPath == '') {
-            return;
-        }
-
         if ($fileUploadOrPath instanceof FileUpload) {
             $filename = $fileUploadOrPath->name;
 
@@ -46,13 +40,11 @@ class FileExtensions extends Check
 
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
-        if ($this->_ignoreCase) {
+        if ($this->ignoreCase) {
             $extension = strtolower($extension);
         }
 
-        if (($this->_mode == self::MODE_REQUIRED && !in_array($extension, $this->_extensions)) ||
-              ($this->_mode == self::MODE_PERMITTED && in_array($extension, $this->_extensions))) {
-            $this->addError('fileExtensions');
-        }
+        return !(($this->mode == self::MODE_REQUIRED && !in_array($extension, $this->extensions)) ||
+              ($this->mode == self::MODE_PERMITTED && in_array($extension, $this->extensions)));
     }
 }

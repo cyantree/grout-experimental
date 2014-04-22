@@ -30,31 +30,31 @@ class FileConstraint extends Constraint
     public function setRequired($message = null)
     {
         $this->required = true;
-        $this->addCheck(new IsFile($message));
+        $this->addCheck(new IsFile(), null, $message);
     }
 
     public function setFilesize($minSize, $maxSize, $message = null)
     {
-        $this->addCheck(new HasFilesize($minSize, $maxSize, $message));
+        $this->addCheck(new HasFilesize($minSize, $maxSize), null, $message);
     }
 
     public function setMaxFilesize($size, $message = null)
     {
-        $this->addCheck(new HasFilesize(null, $size, $message));
+        $this->addCheck(new HasFilesize(null, $size), null, $message);
     }
 
     public function setMinFilesize($size, $message = null)
     {
-        $this->addCheck(new HasFilesize($size, null, $message));
+        $this->addCheck(new HasFilesize($size), null, $message);
     }
 
     public function setAllowedExtensions($extensions, $message = null)
     {
-        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_REQUIRED, array('ignoreCase' => true, 'message' => $message)));
+        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_REQUIRED, true), null, $message);
     }
 
     public function setPermittedExtensions($extensions, $message = null)
     {
-        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_PERMITTED, array('ignoreCase' => true, 'message' => $message)));
+        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_PERMITTED, true), null, $message);
     }
 }

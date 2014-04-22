@@ -6,23 +6,23 @@ use Cyantree\Grout\Tools\StringTools;
 
 class IsCorrect extends Check
 {
+    public $id = 'isCorrect';
+
     public $correctOrClosure;
 
-    public function __construct($correctOrClosure, $messageOrOptions = null)
+    public function __construct($correctOrClosure)
     {
-        parent::__construct($messageOrOptions);
+        parent::__construct();
 
         $this->correctOrClosure = $correctOrClosure;
     }
-    public function check($value)
+    public function isValid($value)
     {
         if (is_callable($this->correctOrClosure)) {
-            if (!call_user_func($this->correctOrClosure, $this, $value)) {
-                $this->addError(ArrayTools::get($this->options, 'error', 'manual'));
-            }
+            return call_user_func($this->correctOrClosure, $this, $value);
 
-        } elseif (!$this->correctOrClosure) {
-            $this->addError(ArrayTools::get($this->options, 'error', 'manual'));
         }
+
+        return $this->correctOrClosure;
     }
 }
