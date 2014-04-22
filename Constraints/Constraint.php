@@ -2,7 +2,6 @@
 namespace Cyantree\Grout\Constraints;
 
 use Cyantree\Grout\Filter\ArrayFilter;
-use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Checks\Check;
 
 class Constraint
@@ -12,6 +11,8 @@ class Constraint
     public $message;
 
     public $value;
+
+    public $hasError = false;
 
     public $stopCheckOnError = true;
 
@@ -49,8 +50,8 @@ class Constraint
 
     public function check($skipEmptyErrors = false)
     {
+        $this->hasError = false;
         $errors = null;
-        $isValid = true;
 
         if ($this->allowEmpty && ($this->value === '' || $this->value === null)) {
             return true;
@@ -60,8 +61,8 @@ class Constraint
             $valid = $check->check->isValid($this->value);
 
             if (!$valid) {
-                if ($isValid) {
-                    $isValid = false;
+                if (!$this->hasError) {
+                    $this->hasError = true;
                     $errors = array();
                 }
 
@@ -75,7 +76,7 @@ class Constraint
             }
         }
 
-        return $isValid ? true : $errors;
+        return !$this->hasError ? true : $errors;
     }
 }
 

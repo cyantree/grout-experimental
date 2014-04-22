@@ -2,7 +2,6 @@
 namespace Cyantree\Grout\Constraints;
 
 use Cyantree\Grout\Filter\ArrayFilter;
-use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Tools\ArrayTools;
 
 class ConstraintContainer
