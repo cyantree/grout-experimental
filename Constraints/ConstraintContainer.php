@@ -20,41 +20,43 @@ class ConstraintContainer
         return $this->constraints[$name];
     }
 
-    public function fetch(ArrayFilter $data)
+    public function fetch(ArrayFilter $data, $exclude = null)
     {
-        foreach ($this->constraints as $constraint) {
+        if ($exclude !== null) {
+            $exclude = ArrayTools::convertToKeyArray($exclude);
+        }
+
+        foreach ($this->constraints as $name => $constraint) {
+            if ($exclude !== null && isset($exclude[$name])) {
+                continue;
+            }
+
             $constraint->fetch($data);
         }
     }
 
     public function check($includeSubErrors = true, $skipEmptyErrors = false)
     {
-        $isValid = true;
-        $errors = null;
+        $errors = array();
 
         foreach ($this->constraints as $constraint) {
-            $result = $constraint->check($skipEmptyErrors);
+            $constraintErrors = $constraint->check($skipEmptyErrors);
 
-            if ($result !== true) {
-                if ($isValid) {
-                    $isValid = false;
-                    $errors = array();
-                }
-
+            if (count($constraintErrors)) {
                 $errors[$constraint->name] = $constraint->message;
 
                 if ($includeSubErrors) {
-                    foreach ($result as $code => $message) {
+                    foreach ($constraintErrors as $code => $message) {
                         $errors[$constraint->name . '.' . $code] = $message;
                     }
                 }
             }
         }
 
-        return $isValid ? true : $errors;
+        return $errors;
     }
 
-    public function dumpValuesTo($arrayOrObject, $exclude = null)
+    public function copyValuesTo(&$arrayOrObject, $exclude = null)
     {
         if ($exclude !== null) {
             $exclude = ArrayTools::convertToKeyArray($exclude);
@@ -91,19 +93,23 @@ class ConstraintContainer
         return $res;
     }
 
-    public function loadValuesFrom($arrayOrObject, $exclude = null)
+    public function loadValuesFrom($arrayOrObjectOrArrayFilter, $exclude = null)
     {
+        if ($arrayOrObjectOrArrayFilter instanceof ArrayFilter) {
+            $arrayOrObjectOrArrayFilter = $arrayOrObjectOrArrayFilter->getData();
+        }
+
         if ($exclude !== null) {
             $exclude = ArrayTools::convertToKeyArray($exclude);
         }
 
-        if (is_array($arrayOrObject)) {
+        if (is_array($arrayOrObjectOrArrayFilter)) {
             foreach ($this->constraints as $name => $constraint) {
                 if ($exclude !== null && isset($exclude[$name])) {
                     continue;
                 }
 
-                $constraint->value = $arrayOrObject[$name];
+                $constraint->value = isset($arrayOrObjectOrArrayFilter[$name]) ? $arrayOrObjectOrArrayFilter[$name] : null;
             }
 
         } else {
@@ -112,7 +118,7 @@ class ConstraintContainer
                     continue;
                 }
 
-                $constraint->value = $arrayOrObject->{$name};
+                $constraint->value = isset($arrayOrObjectOrArrayFilter->{$name}) ? $arrayOrObjectOrArrayFilter->{$name} : null;
             }
         }
     }

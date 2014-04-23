@@ -3,6 +3,7 @@ namespace Cyantree\Grout\Constraints;
 
 use Cyantree\Grout\Filter\ArrayFilter;
 use Cyantree\Grout\Checks\Check;
+use Cyantree\Grout\Filters\Filter;
 
 class Constraint
 {
@@ -16,16 +17,33 @@ class Constraint
 
     public $stopCheckOnError = true;
 
-    public $allowEmpty = false;
+    /** @var bool Defines whether non empty input value is required to check at all */
+    public $required = false;
+
+    /** @var bool Defines whether empty values should be checked at all */
+    public $checkEmptyValues = true;
 
     /** @var ConstraintCheck[] */
     protected $_checks = array();
+
+    /** @var Filter[] */
+    protected $_filters = array();
 
     function __construct($name = null, $value = null, $message = null)
     {
         $this->name = $name;
         $this->value = $value;
         $this->message = $message;
+    }
+
+    public function addFilter(Filter $filter, $prepend = false)
+    {
+        if ($prepend) {
+            array_unshift($this->_filters, $filter);
+
+        } else {
+            $this->_filters[] = $filter;
+        }
     }
 
     public function addCheck(Check $check, $id = null, $message = null)
@@ -41,9 +59,20 @@ class Constraint
         $this->_checks[$id] = $c;
     }
 
+    protected function _isEmpty($value)
+    {
+        return $value === null;
+    }
+
     public function fetch(ArrayFilter $data)
     {
-        $this->value = $data->get($this->name);
+        $v = $data->get($this->name);
+
+        foreach ($this->_filters as $filter) {
+            $v = $filter->doFiltering($v);
+        }
+
+        $this->value = $v;
 
         return $this->value;
     }
@@ -51,20 +80,26 @@ class Constraint
     public function check($skipEmptyErrors = false)
     {
         $this->hasError = false;
-        $errors = null;
+        $errors = array();
 
-        if ($this->allowEmpty && ($this->value === '' || $this->value === null)) {
-            return true;
+        $isEmpty = $this->_isEmpty($this->value);
+
+        if ($isEmpty) {
+            if (!$this->checkEmptyValues) {
+                return $errors;
+
+            } elseif ($this->required) {
+                $errors['required'] = null;
+
+                return $errors;
+            }
         }
 
         foreach ($this->_checks as $id => $check) {
             $valid = $check->check->isValid($this->value);
 
             if (!$valid) {
-                if (!$this->hasError) {
-                    $this->hasError = true;
-                    $errors = array();
-                }
+                $this->hasError = true;
 
                 if (!$skipEmptyErrors || $check->message !== null) {
                     $errors[$id] = $check->message;
@@ -76,7 +111,7 @@ class Constraint
             }
         }
 
-        return !$this->hasError ? true : $errors;
+        return $errors;
     }
 }
 

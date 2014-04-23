@@ -1,8 +1,6 @@
 <?php
 namespace Cyantree\Grout\Checks;
 
-use Cyantree\Grout\Tools\ArrayTools;
-
 class HasLength extends Check
 {
     public $minLength = null;

@@ -10,7 +10,7 @@ use Cyantree\Grout\Types\FileUpload;
 
 class FileConstraint extends Constraint
 {
-    public $required = false;
+    public $required = true;
 
     /** @return FileUpload */
     public function getFileUpload()
@@ -25,6 +25,13 @@ class FileConstraint extends Constraint
         $this->value = FileUpload::fromPhpFileArray($data->get($this->name));
 
         return $this->value;
+    }
+
+    protected function _isEmpty($value)
+    {
+        /** @var $value FileUpload */
+
+        return $value === null || !$value->size;
     }
 
     public function setRequired($message = null)
