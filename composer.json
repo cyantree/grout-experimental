@@ -1,6 +1,6 @@
 {
     "name": "cyantree/grout-experimental",
-    "version": "2.0",
+    "version": "2.1",
     "type": "library",
     "description": "Experimental features for grout",
     "keywords": ["framework", "application", "mvc", "grout"],
@@ -13,6 +13,6 @@
         "psr-4": { "Cyantree\\Grout\\": "" }
     },
     "require": {
-        "cyantree/grout": ">=1.0,<3.0"
+        "cyantree/grout": ">=1.0,<4.0"
     }
 }
