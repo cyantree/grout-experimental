@@ -89,6 +89,7 @@ class Constraint
                 return $errors;
 
             } elseif ($this->required) {
+                $this->hasError = true;
                 $errors['required'] = null;
 
                 return $errors;
