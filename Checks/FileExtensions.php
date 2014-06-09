@@ -8,7 +8,7 @@ use Cyantree\Grout\Types\FileUpload;
 class FileExtensions extends Check
 {
     const MODE_REQUIRED = 'required';
-    const MODE_PERMITTED = 'permitted';
+    const MODE_FORBIDDEN = 'forbidden';
 
     public $extensions;
     public $mode;
@@ -45,6 +45,6 @@ class FileExtensions extends Check
         }
 
         return !(($this->mode == self::MODE_REQUIRED && !in_array($extension, $this->extensions)) ||
-              ($this->mode == self::MODE_PERMITTED && in_array($extension, $this->extensions)));
+              ($this->mode == self::MODE_FORBIDDEN && in_array($extension, $this->extensions)));
     }
 }

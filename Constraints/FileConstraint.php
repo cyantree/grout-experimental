@@ -60,8 +60,8 @@ class FileConstraint extends Constraint
         $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_REQUIRED, true), null, $message);
     }
 
-    public function setPermittedExtensions($extensions, $message = null)
+    public function setForbiddenExtensions($extensions, $message = null)
     {
-        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_PERMITTED, true), null, $message);
+        $this->addCheck(new FileExtensions($extensions, FileExtensions::MODE_FORBIDDEN, true), null, $message);
     }
 }
