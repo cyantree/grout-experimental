@@ -1,18 +1,28 @@
 {
     "name": "cyantree/grout-experimental",
-    "version": "2.1",
+    "version": "3.0",
     "type": "library",
     "description": "Experimental features for grout",
-    "keywords": ["framework", "application", "mvc", "grout"],
+    "keywords": [
+        "framework",
+        "application",
+        "mvc",
+        "grout"
+    ],
     "homepage": "https://github.com/cyantree/grout-experimental",
     "license": "LGPL-3.0",
     "authors": [
-        {"name": "Christoph Schreiber", "email": "mail@cyantree.com"}
+        {
+            "name": "Christoph Schreiber",
+            "email": "mail@cyantree.com"
+        }
     ],
     "autoload": {
-        "psr-4": { "Cyantree\\Grout\\": "" }
+        "psr-4": {
+            "Cyantree\\Grout\\": ""
+        }
     },
     "require": {
-        "cyantree/grout": ">=1.0,<4.0"
+        "cyantree/grout": ">=1.0,<5.0"
     }
 }
