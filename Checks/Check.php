@@ -3,7 +3,7 @@ namespace Cyantree\Grout\Checks;
 
 use Cyantree\Grout\Tools\ArrayTools;
 
-class Check
+abstract class Check
 {
     public $id;
 
@@ -12,8 +12,5 @@ class Check
 
     }
 
-    public function isValid($value)
-    {
-        return true;
-    }
+    abstract public function isValid($value);
 }
