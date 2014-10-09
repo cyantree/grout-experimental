@@ -29,7 +29,7 @@ class Constraint
     /** @var Filter[] */
     protected $_filters = array();
 
-    function __construct($name = null, $value = null, $message = null)
+    public function __construct($name = null, $value = null, $message = null)
     {
         $this->name = $name;
         $this->value = $value;
@@ -114,12 +114,4 @@ class Constraint
 
         return $errors;
     }
-}
-
-class ConstraintCheck
-{
-    /** @var Check */
-    public $check;
-
-    public $message;
 }

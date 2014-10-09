@@ -17,7 +17,7 @@ class SanitizeString extends Filter
     public function doFiltering($value)
     {
         // Remove non printable characters
-        $value = preg_replace('![^\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}\r\n]!u','',$value);
+        $value = preg_replace('![^\p{L}\p{M}\p{N}\p{P}\p{S}\p{Z}\r\n]!u', '', $value);
 
         if ($this->collapseLines) {
             $value = str_replace(array("\r", "\n"), array('', ' '), $value);
@@ -35,5 +35,4 @@ class SanitizeString extends Filter
 
         return $value;
     }
-
 }
