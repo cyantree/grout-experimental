@@ -109,7 +109,9 @@ class ConstraintContainer
                     continue;
                 }
 
-                $constraint->value = isset($arrayOrObjectOrArrayFilter[$name]) ? $arrayOrObjectOrArrayFilter[$name] : null;
+                $constraint->value = isset($arrayOrObjectOrArrayFilter[$name])
+                    ? $arrayOrObjectOrArrayFilter[$name]
+                    : null;
             }
 
         } else {
@@ -118,7 +120,9 @@ class ConstraintContainer
                     continue;
                 }
 
-                $constraint->value = isset($arrayOrObjectOrArrayFilter->{$name}) ? $arrayOrObjectOrArrayFilter->{$name} : null;
+                $constraint->value = isset($arrayOrObjectOrArrayFilter->{$name})
+                    ? $arrayOrObjectOrArrayFilter->{$name}
+                    : null;
             }
         }
     }

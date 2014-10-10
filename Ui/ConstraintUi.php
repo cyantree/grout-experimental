@@ -12,7 +12,13 @@ class ConstraintUi extends Ui
 {
     public function constraintTextInput(TextConstraint $constraint, $parameters = null)
     {
-        $defaultParameters = array('error' => $constraint->hasError, 'required' => $constraint->required && $constraint->checkEmptyValues && ArrayTools::get($parameters, 'required') !== false);
+        $required = $constraint->required
+            && $constraint->checkEmptyValues
+            && ArrayTools::get($parameters, 'required') !== false;
+
+        $defaultParameters = array(
+            'error' => $constraint->hasError,
+            'required' => $required);
 
         if ($parameters !== null) {
             $parameters = array_merge($defaultParameters, $parameters);
@@ -32,7 +38,13 @@ class ConstraintUi extends Ui
 
     public function constraintTextArea(TextConstraint $constraint, $parameters = null)
     {
-        $defaultParameters = array('error' => $constraint->hasError, 'required' => $constraint->required && $constraint->checkEmptyValues && ArrayTools::get($parameters, 'required') !== false);
+        $required = $constraint->required
+            && $constraint->checkEmptyValues
+            && ArrayTools::get($parameters, 'required') !== false;
+
+        $defaultParameters = array(
+            'error' => $constraint->hasError,
+            'required' => $required);
 
         if ($parameters !== null) {
             $parameters = array_merge($defaultParameters, $parameters);
@@ -75,7 +87,13 @@ class ConstraintUi extends Ui
 
     public function constraintPasswordInput(TextConstraint $constraint, $parameters = null)
     {
-        $defaultParameters = array('error' => $constraint->hasError, 'required' => $constraint->required && $constraint->checkEmptyValues && ArrayTools::get($parameters, 'required') !== false);
+        $required = $constraint->required
+            && $constraint->checkEmptyValues
+            && ArrayTools::get($parameters, 'required') !== false;
+
+        $defaultParameters = array(
+            'error' => $constraint->hasError,
+            'required' => $required);
 
         if ($parameters !== null) {
             $parameters = array_merge($defaultParameters, $parameters);
@@ -90,7 +108,13 @@ class ConstraintUi extends Ui
 
     public function constraintSelect(ListConstraint $constraint, $parameters = null)
     {
-        $defaultParameters = array('error' => $constraint->hasError, 'required' => $constraint->required && $constraint->checkEmptyValues && ArrayTools::get($parameters, 'required') !== false);
+        $required = $constraint->required
+            && $constraint->checkEmptyValues
+            && ArrayTools::get($parameters, 'required') !== false;
+
+        $defaultParameters = array(
+            'error' => $constraint->hasError,
+            'required' => $required);
 
         if ($parameters !== null) {
             $parameters = array_merge($defaultParameters, $parameters);
@@ -104,7 +128,13 @@ class ConstraintUi extends Ui
 
     public function constraintFileInput(FileConstraint $constraint, $parameters = null)
     {
-        $defaultParameters = array('error' => $constraint->hasError, 'required' => $constraint->required && $constraint->checkEmptyValues && ArrayTools::get($parameters, 'required') !== false);
+        $required = $constraint->required
+            && $constraint->checkEmptyValues
+            && ArrayTools::get($parameters, 'required') !== false;
+
+        $defaultParameters = array(
+            'error' => $constraint->hasError,
+            'required' => $required);
 
         if ($parameters !== null) {
             $parameters = array_merge($defaultParameters, $parameters);
