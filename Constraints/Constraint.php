@@ -24,10 +24,10 @@ class Constraint
     public $checkEmptyValues = true;
 
     /** @var ConstraintCheck[] */
-    protected $_checks = array();
+    protected $checks = array();
 
     /** @var Filter[] */
-    protected $_filters = array();
+    protected $filters = array();
 
     public function __construct($name = null, $value = null, $message = null)
     {
@@ -39,10 +39,10 @@ class Constraint
     public function addFilter(Filter $filter, $prepend = false)
     {
         if ($prepend) {
-            array_unshift($this->_filters, $filter);
+            array_unshift($this->filters, $filter);
 
         } else {
-            $this->_filters[] = $filter;
+            $this->filters[] = $filter;
         }
     }
 
@@ -56,10 +56,10 @@ class Constraint
             $id = $check->id;
         }
 
-        $this->_checks[$id] = $c;
+        $this->checks[$id] = $c;
     }
 
-    protected function _isEmpty($value)
+    protected function isEmpty($value)
     {
         return $value === null;
     }
@@ -68,7 +68,7 @@ class Constraint
     {
         $v = $data->get($this->name);
 
-        foreach ($this->_filters as $filter) {
+        foreach ($this->filters as $filter) {
             $v = $filter->doFiltering($v);
         }
 
@@ -82,7 +82,7 @@ class Constraint
         $this->hasError = false;
         $errors = array();
 
-        $isEmpty = $this->_isEmpty($this->value);
+        $isEmpty = $this->isEmpty($this->value);
 
         if ($isEmpty) {
             if (!$this->checkEmptyValues) {
@@ -96,7 +96,7 @@ class Constraint
             }
         }
 
-        foreach ($this->_checks as $id => $check) {
+        foreach ($this->checks as $id => $check) {
             $valid = $check->check->isValid($this->value);
 
             if (!$valid) {

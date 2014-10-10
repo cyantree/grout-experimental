@@ -20,7 +20,7 @@ class TextConstraint extends Constraint
         }
     }
 
-    protected function _isEmpty($value)
+    protected function isEmpty($value)
     {
         return $value === '' || $value === null;
     }

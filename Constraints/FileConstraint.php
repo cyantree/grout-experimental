@@ -27,7 +27,7 @@ class FileConstraint extends Constraint
         return $this->value;
     }
 
-    protected function _isEmpty($value)
+    protected function isEmpty($value)
     {
         /** @var $value FileUpload */
 
