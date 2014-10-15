@@ -1,8 +1,6 @@
 <?php
 namespace Cyantree\Grout\Checks;
 
-use Cyantree\Grout\Checks\Check;
-
 class IsNotValue extends Check
 {
     public $value;

@@ -1,8 +1,6 @@
 <?php
 namespace Cyantree\Grout\Checks;
 
-use Cyantree\Grout\Checks\Check;
-use Cyantree\Grout\Tools\ArrayTools;
 use Cyantree\Grout\Types\FileUpload;
 
 class FileExtensions extends Check

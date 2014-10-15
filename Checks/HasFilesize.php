@@ -1,7 +1,6 @@
 <?php
 namespace Cyantree\Grout\Checks;
 
-use Cyantree\Grout\Checks\Check;
 use Cyantree\Grout\Types\FileUpload;
 
 class HasFilesize extends Check
