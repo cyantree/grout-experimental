@@ -1,10 +1,7 @@
 <?php
 namespace Cyantree\Grout\Filters;
 
-class Filter
+abstract class Filter
 {
-    public function doFiltering($value)
-    {
-        return $value;
-    }
+    abstract public function doFiltering($value);
 }
